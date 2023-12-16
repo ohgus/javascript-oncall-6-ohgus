@@ -7,16 +7,11 @@ class Schedule {
     this.#monthSchedule = [];
   }
 
-  setWeekdayInput(input) {
-    const weekday = input.split(",");
+  setScheduleInput(input) {
+    const [weekday, dayoff] = input;
 
-    this.#weekday = weekday;
-  }
-
-  setDayoffInput(input) {
-    const dayoff = input.split(",");
-
-    this.#dayoff = dayoff;
+    this.#weekday = weekday.split(",");
+    this.#dayoff = dayoff.split(",");
   }
 }
 
