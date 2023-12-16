@@ -33,6 +33,10 @@ class Controller {
       this.#scheduleInfo.setWeekdayInput(weekday);
       const dayoff = await InputView.readDayoff();
       this.#scheduleInfo.setDayoffInput(dayoff);
+      this.#scheduleInfo.setMonthSchedule(
+        this.#callenderInfo.getMonth(),
+        this.#callenderInfo.getDays()
+      );
     } catch (error) {
       OutputView.printError(error.message);
       return await this.#setSchedule();

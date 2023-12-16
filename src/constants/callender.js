@@ -9,4 +9,15 @@ const ALL_DAY = Object.freeze({
   weekend: ["토", "일"],
 });
 
-export { END_DAY, ALL_DAY };
+const HOLLIDAY = Object.freeze({
+  month: [1, 3, 5, 6, 8, 10, 12],
+  1: [1],
+  3: [1],
+  5: [5],
+  6: [6],
+  8: [15],
+  10: [3, 9],
+  12: [25],
+});
+
+export { END_DAY, ALL_DAY, HOLLIDAY };
