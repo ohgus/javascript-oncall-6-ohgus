@@ -85,6 +85,10 @@ class Schedule {
     }
   }
 
+  getSchedule() {
+    return this.#monthSchedule;
+  }
+
   #getkHolliday(month) {
     if (HOLLIDAY.month.includes(month)) {
       return HOLLIDAY[month];
