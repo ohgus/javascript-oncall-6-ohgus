@@ -83,7 +83,6 @@ class Schedule {
         }
       }
     }
-    console.log(this.#monthSchedule);
   }
 
   #getkHolliday(month) {
