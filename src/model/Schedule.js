@@ -65,20 +65,25 @@ class Schedule {
             this.#monthSchedule.push(weekdayStack.pop());
           }
         }
-      } else {
+      } else if (ALL_DAY.weekend.includes(dayList[dayIndex])) {
         if (dayoffIndex >= this.#dayoff.length) {
           dayoffIndex = dayoffIndex % this.#dayoff.length;
         }
         if (this.#checkWorkYesterday(this.#dayoff[dayoffIndex])) {
           dayoffStack.push(this.#dayoff[dayoffIndex]);
-          this.#monthSchedule.push(this.#dayoff[dayoffIndex + 1]);
-          dayoffIndex += 2;
+          if (dayoffIndex === this.#dayoff.length - 1) {
+            this.#monthSchedule.push(this.#dayoff[1]);
+            dayoffIndex = 2;
+          } else {
+            this.#monthSchedule.push(this.#dayoff[dayoffIndex + 1]);
+            dayoffIndex += 2;
+          }
         } else {
           if (dayoffStack.length > 0) {
+            this.#monthSchedule.push(dayoffStack.pop());
+          } else {
             this.#monthSchedule.push(this.#dayoff[dayoffIndex]);
             dayoffIndex += 1;
-          } else {
-            this.#monthSchedule.push(dayoffStack.pop());
           }
         }
       }
