@@ -1,3 +1,5 @@
+import { Console } from "@woowacourse/mission-utils";
+import ERROR from "../constants/error.js";
 import { END_DAY, ALL_DAY } from "../constants/callender.js";
 
 class Callender {
@@ -11,8 +13,10 @@ class Callender {
 
   setDateInput(input) {
     const [month, day] = input.split(",");
+    this.#validate(month, day);
     this.#setEndDay(Number(month));
     this.#setDayList(day);
+    this.#month = Number(month);
   }
 
   #setEndDay(month) {
@@ -35,6 +39,16 @@ class Callender {
       } else {
         index += 1;
       }
+    }
+  }
+
+  #validate(month, day) {
+    if (!ERROR.regex.month.test(month)) {
+      Console.print(
+        "[ERROR] 월은 1이상 12이하의 숫자만 입력 가능합니다. 다시 입력 해주세요."
+      );
+    } else if (!ALL_DAY.allDays.includes(day)) {
+      Console.print("[ERROR] 요일의 맞지 않습니다. 다시 입력 해주세요.");
     }
   }
 }
