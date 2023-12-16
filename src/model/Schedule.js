@@ -9,32 +9,36 @@ class Schedule {
     this.#monthSchedule = [];
   }
 
-  setScheduleInput(input) {
-    const [weekday, dayoff] = input;
-
-    this.#validate(weekday, dayoff);
-
+  setWeekdayInput(weekday) {
+    this.#validateWeekday(weekday);
     this.#weekday = weekday;
+  }
+
+  setDayoffInput(dayoff) {
+    this.#validateDayoff(this.#weekday, dayoff);
     this.#dayoff = dayoff;
   }
 
-  #validate(weekday, dayoff) {
+  #validateWeekday(weekday) {
     if (
       weekday.length < ERROR.people.min ||
       weekday.length > ERROR.people.max
     ) {
       throw new Error(ERROR.message.people);
-    } else if (
-      dayoff.length < ERROR.people.min ||
-      dayoff.length > ERROR.people.max
-    ) {
-      throw new Error(ERROR.message.people);
-    } else if (
-      weekday.length !== new Set(weekday).size ||
-      dayoff.length !== new Set(dayoff).size
-    ) {
+    } else if (weekday.length !== new Set(weekday).size) {
       throw new Error(ERROR.message.schedule.duplicate);
     }
+    this.#validateName(weekday);
+  }
+
+  #validateDayoff(weekday, dayoff) {
+    if (dayoff.length < ERROR.people.min || dayoff.length > ERROR.people.max) {
+      throw new Error(ERROR.message.people);
+    } else if (dayoff.length !== new Set(dayoff).size) {
+      throw new Error(ERROR.message.schedule.duplicate);
+    }
+
+    this.#validateName(dayoff);
 
     weekday.forEach((name) => {
       if (!dayoff.includes(name)) {
@@ -47,9 +51,6 @@ class Schedule {
         throw new Error(ERROR.message.schedule.onceInWhile);
       }
     });
-
-    this.#validateName(weekday);
-    this.#validateName(dayoff);
   }
 
   #validateName(schedule) {
