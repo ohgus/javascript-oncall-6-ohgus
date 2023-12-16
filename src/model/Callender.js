@@ -1,4 +1,4 @@
-import { END_DAY } from "../constants/callender.js";
+import { END_DAY, ALL_DAY } from "../constants/callender.js";
 
 class Callender {
   #month;
@@ -12,6 +12,7 @@ class Callender {
   setDateInput(input) {
     const [month, day] = input.split(",");
     this.#setEndDay(Number(month));
+    this.#setDayList(day);
   }
 
   #setEndDay(month) {
@@ -21,6 +22,19 @@ class Callender {
       this.#endDay = 31;
     } else {
       this.#endDay = 28;
+    }
+  }
+
+  #setDayList(day) {
+    let index = ALL_DAY.allDays.indexOf(day);
+
+    while (this.#dayList.length < this.#endDay) {
+      this.#dayList.push(ALL_DAY.allDays[index]);
+      if (index === 6) {
+        index = 0;
+      } else {
+        index += 1;
+      }
     }
   }
 }
