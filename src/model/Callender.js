@@ -51,6 +51,18 @@ class Callender {
       Console.print("[ERROR] 요일의 맞지 않습니다. 다시 입력 해주세요.");
     }
   }
+
+  getMonth() {
+    return this.#month;
+  }
+
+  getDays() {
+    return this.#dayList;
+  }
+
+  getEndDay() {
+    return this.#endDay;
+  }
 }
 
 export default Callender;
