@@ -44,11 +44,11 @@ class Callender {
 
   #validate(month, day) {
     if (!ERROR.regex.month.test(month)) {
-      Console.print(
+      throw new Error(
         "[ERROR] 월은 1이상 12이하의 숫자만 입력 가능합니다. 다시 입력 해주세요."
       );
     } else if (!ALL_DAY.allDays.includes(day)) {
-      Console.print("[ERROR] 요일의 맞지 않습니다. 다시 입력 해주세요.");
+      throw new Error("[ERROR] 요일의 맞지 않습니다. 다시 입력 해주세요.");
     }
   }
 
