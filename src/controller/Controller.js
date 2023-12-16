@@ -20,9 +20,22 @@ class Controller {
     try {
       const input = await InputView.readDate();
       this.#callenderInfo.setDateInput(input);
+      await this.#setSchedule();
     } catch (error) {
       OutputView.printError(error.message);
       return await this.#setCallender();
+    }
+  }
+
+  async #setSchedule() {
+    try {
+      const weekday = await InputView.readWeekday();
+      this.#scheduleInfo.setWeekdayInput(weekday);
+      const dayoff = await InputView.readDayoff();
+      this.#scheduleInfo.setDayoffInput(dayoff);
+    } catch (error) {
+      OutputView.printError(error.message);
+      return await this.#setSchedule();
     }
   }
 }
