@@ -1,6 +1,7 @@
 import Callender from "../model/Callender.js";
 import Schedule from "../model/Schedule.js";
 import InputView from "../view/InputView.js";
+import OutputView from "../view/OutputView.js";
 
 class Controller {
   #callenderInfo;
@@ -20,6 +21,7 @@ class Controller {
       const input = await InputView.readDate();
       this.#callenderInfo.setDateInput(input);
     } catch (error) {
+      OutputView.printError(error.message);
       return await this.#setCallender();
     }
   }
