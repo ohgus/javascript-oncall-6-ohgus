@@ -14,6 +14,11 @@ class Controller {
 
   async start() {
     await this.#setCallender();
+    OutputView.printResult(
+      this.#callenderInfo.getMonth(),
+      this.#callenderInfo.getDays(),
+      this.#scheduleInfo.getSchedule()
+    );
   }
 
   async #setCallender() {
