@@ -1,5 +1,6 @@
 import { Console } from "@woowacourse/mission-utils";
 import { HOLLIDAY } from "../constants/callender.js";
+import MESSAGE from "../constants/message.js";
 
 const OutputView = {
   printError(error) {
@@ -7,31 +8,23 @@ const OutputView = {
   },
 
   printResult(month, dayList, monthSchedule) {
-    let index = 0;
+    let date = 0;
     Console.print("");
 
-    while (index < dayList.length) {
-      if (HOLLIDAY.month.includes(month)) {
-        if (HOLLIDAY[month].includes(index + 1)) {
-          Console.print(
-            `${month}월 ${index + 1}일 ${dayList[index]}(휴일) ${
-              monthSchedule[index]
-            }`
-          );
-          index += 1;
-        } else {
-          Console.print(
-            `${month}월 ${index + 1}일 ${dayList[index]} ${
-              monthSchedule[index]
-            }`
-          );
-          index += 1;
-        }
+    while (date < dayList.length) {
+      if (
+        HOLLIDAY.month.includes(month) &&
+        HOLLIDAY[month].includes(date + 1)
+      ) {
+        Console.print(
+          MESSAGE.print.holidayInWeekday(month, date, dayList, monthSchedule)
+        );
+        date += 1;
       } else {
         Console.print(
-          `${month}월 ${index + 1}일 ${dayList[index]} ${monthSchedule[index]}`
+          MESSAGE.print.weekdayOrWeekend(month, date, dayList, monthSchedule)
         );
-        index += 1;
+        date += 1;
       }
     }
   },
