@@ -8,6 +8,7 @@ const OutputView = {
 
   printResult(month, dayList, monthSchedule) {
     let index = 0;
+    Console.print("");
 
     while (index < dayList.length) {
       if (HOLLIDAY.month.includes(month)) {
