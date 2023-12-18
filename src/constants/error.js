@@ -20,6 +20,11 @@ const ERROR = Object.freeze({
       duplicate:
         "[ERROR] 하나의 근무 스케쥴에 중복된 이름은 사용할 수 없습니다. 다시 입력해 주세요.",
     },
+    month: {
+      wrongMonthNum:
+        "[ERROR] 월은 1이상 12이하의 숫자만 입력 가능합니다. 다시 입력 해주세요.",
+      wrongDayString: "[ERROR] 요일의 맞지 않습니다. 다시 입력 해주세요.",
+    },
   },
 });
 
