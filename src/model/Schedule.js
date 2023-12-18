@@ -29,61 +29,72 @@ class Schedule {
     const holliday = this.#getkHolliday(month);
 
     while (this.#monthSchedule.length < dayList.length) {
-      // 평일이라면
-      if (ALL_DAY.weekday.includes(dayList[dayIndex])) {
-        if (holliday.includes(dayIndex + 1)) {
-          if (dayoffIndex >= this.#dayoff.length) {
-            dayoffIndex = dayoffIndex % this.#dayoff.length;
-          }
-          if (this.#checkWorkYesterday(this.#dayoff[dayoffIndex])) {
-            dayoffStack.push(this.#dayoff[dayoffIndex]);
-            this.#monthSchedule.push(this.#dayoff[dayoffIndex + 1]);
-            dayoffIndex += 2;
-          } else {
-            if (dayoffStack.length > 0) {
-              this.#monthSchedule.push(this.#dayoff[dayoffIndex]);
-              dayoffIndex += 1;
-            } else {
-              this.#monthSchedule.push(dayoffStack.pop());
-            }
-          }
-        }
-        if (weekdayIndex >= this.#weekday.length) {
-          weekdayIndex = weekdayIndex % this.#weekday.length;
-        }
-        if (dayIndex === 0) {
+      if (
+        ALL_DAY.weekday.includes(dayList[dayIndex]) &&
+        !holliday.includes(dayIndex + 1)
+      ) {
+        // 평일이라면 => 주말, 공휴일 모두 아닌 경우
+        if (this.#monthSchedule.length === 0) {
+          // 이번달 스케쥴의 첫번째인 경우
           this.#monthSchedule.push(this.#weekday[weekdayIndex]);
-          weekdayIndex += 1;
+          weekdayIndex = (weekdayIndex + 1) % this.#weekday.length;
+          dayIndex += 1;
         } else {
-          if (weekdayStack.length === 0) {
-            if (this.#checkWorkYesterday(this.#weekday[weekdayIndex])) {
-              weekdayStack.push(this.#weekday[weekdayIndex]);
-              this.#monthSchedule.push(this.#weekday[weekdayIndex + 1]);
-              weekdayIndex += 2;
+          // 스케쥴 첫번째가 아닌 경우
+          if (this.#checkWorkYesterday(this.#weekday[weekdayIndex])) {
+            // 전날 근무를 한 경우
+            this.#monthSchedule.push(
+              this.#weekday[(weekdayIndex + 1) % this.#weekday.length]
+            );
+            weekdayStack.push(this.#weekday[weekdayIndex]);
+            weekdayIndex = (weekdayIndex + 2) % this.#weekday.length;
+            dayIndex += 1;
+          } else {
+            // 전날 근무를 안했을 경우
+            if (weekdayStack.length > 0) {
+              // 근무 미이행자가 있는 경우
+              this.#monthSchedule.push(weekdayStack.shift());
+              dayIndex += 1;
+            } else {
+              // 근무 미이행자가 없는 경우
+              this.#monthSchedule.push(this.#weekday[weekdayIndex]);
+              weekdayIndex = (weekdayIndex + 1) % this.#weekday.length;
+              dayIndex += 1;
             }
-          } else {
-            this.#monthSchedule.push(weekdayStack.pop());
           }
         }
-      } else if (ALL_DAY.weekend.includes(dayList[dayIndex])) {
-        if (dayoffIndex >= this.#dayoff.length) {
-          dayoffIndex = dayoffIndex % this.#dayoff.length;
-        }
-        if (this.#checkWorkYesterday(this.#dayoff[dayoffIndex])) {
-          dayoffStack.push(this.#dayoff[dayoffIndex]);
-          if (dayoffIndex === this.#dayoff.length - 1) {
-            this.#monthSchedule.push(this.#dayoff[1]);
-            dayoffIndex = 2;
-          } else {
-            this.#monthSchedule.push(this.#dayoff[dayoffIndex + 1]);
-            dayoffIndex += 2;
-          }
+      } else if (
+        ALL_DAY.weekend.includes(dayList[dayIndex]) ||
+        holliday.includes(dayIndex + 1)
+      ) {
+        // 휴일인 경우 => 공휴일, 주말
+        if (this.#monthSchedule.length === 0) {
+          // 이번달 스케쥴 첫번째 순서인 경우
+          this.#monthSchedule.push(this.#dayoff[dayoffIndex]);
+          dayoffIndex = (dayoffIndex + 1) % this.#dayoff.length;
+          dayIndex += 1;
         } else {
-          if (dayoffStack.length > 0) {
-            this.#monthSchedule.push(dayoffStack.pop());
+          // 이번달 스케쥴 첫번째 순서가 아닌 경우
+          if (this.#checkWorkYesterday(this.#dayoff[dayoffIndex])) {
+            // 전날 근무를 했을 경우
+            this.#monthSchedule.push(
+              this.#dayoff[(dayoffIndex + 1) % this.#dayoff.length]
+            );
+            dayoffStack.push(this.#dayoff[dayoffIndex]);
+            dayoffIndex = (dayoffIndex + 2) % this.#dayoff.length;
+            dayIndex += 1;
           } else {
-            this.#monthSchedule.push(this.#dayoff[dayoffIndex]);
-            dayoffIndex += 1;
+            // 전날 근무를 안했을 경우
+            if (dayoffStack.length > 0) {
+              // 근무 미이행자가 있는 경우
+              this.#monthSchedule.push(dayoffStack.shift());
+              dayIndex += 1;
+            } else {
+              // 근무 미이행자가 없는 경우
+              this.#monthSchedule.push(this.#dayoff[dayoffIndex]);
+              dayoffIndex = (dayoffIndex + 1) % this.#dayoff.length;
+              dayIndex += 1;
+            }
           }
         }
       }
