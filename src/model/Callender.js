@@ -20,11 +20,11 @@ class Callender {
 
   #setEndDay(month) {
     if (END_DAY.thirty.includes(month)) {
-      this.#endDay = 30;
+      this.#endDay = END_DAY.endThirty;
     } else if (END_DAY.thirtyOne.includes(month)) {
-      this.#endDay = 31;
+      this.#endDay = END_DAY.endThirtyOne;
     } else {
-      this.#endDay = 28;
+      this.#endDay = END_DAY.feb;
     }
   }
 
@@ -33,11 +33,7 @@ class Callender {
 
     while (this.#dayList.length < this.#endDay) {
       this.#dayList.push(ALL_DAY.allDays[index]);
-      if (index === 6) {
-        index = 0;
-      } else {
-        index += 1;
-      }
+      index = (index + 1) % ALL_DAY.dayLength;
     }
   }
 
